@@ -29,8 +29,22 @@ define(function (require, exports, module) {
                         var view = ownedElement.ownedElements[0].ownedViews[0];
 
                         if(view)
+                        {
                             DiagramManager.selectInDiagram(view);
+                        }
+                        else
+                        {
+                            Toast.info("No linked diagram.");
+                        }
                     }
+                    else
+                    {
+                        Toast.info("No linked diagram.");
+                    }
+                }
+                else
+                {
+                    Toast.info("No linked diagram.");
                 }
             }
             else

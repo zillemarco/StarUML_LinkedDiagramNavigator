@@ -1,0 +1,17 @@
+{
+    "name": "MarcoZille.LinkedDiagramNavigator",
+    "title": "LinkedDiagramNavigator",
+    "description": "",
+    "homepage": "https://github.com/staruml/HelloWorld",
+    "version": "0.0.1",
+    "keywords": ["linked", "diagrams", "linked diagrams", "navigator"],
+    "author": {
+        "name": "Marco Zille",
+        "email": "marco.zille@live.com",
+        "url": "https://github.com/zillemarco"
+    },
+    "license": "MIT",
+    "engines": {
+        "staruml": ">=2.0.0"
+    }
+}

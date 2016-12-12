@@ -4,7 +4,7 @@
     "description": "If it's present, navigates to the diagram connected to an element",
     "homepage": "https://github.com/zillemarco/StarUML_LinkedDiagramNavigator",
     "issues": "https://github.com/zillemarco/StarUML_LinkedDiagramNavigator/issues",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "keywords": ["linked", "diagrams", "linked diagrams", "navigator"],
     "author": {
         "name": "Marco Zille",

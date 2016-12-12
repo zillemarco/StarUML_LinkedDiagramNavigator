@@ -7,6 +7,7 @@ define(function (require, exports, module) {
     var Repository          = app.getModule("core/Repository"),
         DiagramManager      = app.getModule('diagrams/DiagramManager'),
         SelectionManager    = app.getModule("engine/SelectionManager"),
+        ModelExplorerView   = app.getModule('explorer/ModelExplorerView'),
         CommandManager      = app.getModule("command/CommandManager"),
         DefaultMenus        = app.getModule("menu/DefaultMenus"),
         ContextMenuManager  = app.getModule("menu/ContextMenuManager"),
@@ -14,6 +15,12 @@ define(function (require, exports, module) {
 
     function _handleOpenLinkedDiagram()
     {
+        if(SelectionManager.getSelectedModels().length > 1)
+        {
+            Toast.warning("Select only one item.");
+            return;
+        }
+
         var element = SelectionManager.getSelected();
         
         if (element)
@@ -31,30 +38,31 @@ define(function (require, exports, module) {
                         if(view)
                         {
                             DiagramManager.selectInDiagram(view);
+                            ModelExplorerView.select(ownedElement.ownedElements[0], true);
                         }
                         else
                         {
-                            Toast.info("No linked diagram.");
+                            Toast.error("No linked diagram.");
                         }
                     }
                     else
                     {
-                        Toast.info("No linked diagram.");
+                        Toast.error("No linked diagram.");
                     }
                 }
                 else
                 {
-                    Toast.info("No linked diagram.");
+                    Toast.error("No linked diagram.");
                 }
             }
             else
             {
-                Toast.info("No linked diagram.");
+                Toast.error("No linked diagram.");
             }
         }
         else
         {
-            Toast.info("Nothing selected.");
+            Toast.warning("Nothing selected.");
         }
     }
 

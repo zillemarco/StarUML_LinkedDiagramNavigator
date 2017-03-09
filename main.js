@@ -25,11 +25,24 @@ define(function (require, exports, module) {
         
         if (element)
         {
-            if(element.ownedElements.length == 1)
+            var foundView = false;
+            for(var ownedElementIndex = 0; ownedElementIndex < element.ownedElements.length; ownedElementIndex++)
             {
-                var ownedElement = element.ownedElements[0];
+                var ownedElement = element.ownedElements[ownedElementIndex];
 
-                if(ownedElement.ownedElements.length == 1)
+                if(ownedElement instanceof type.UMLDiagram)
+                {
+                    var view = ownedElement.ownedViews[0];
+
+                    if(view)
+                    {
+                        foundView = true;
+                        DiagramManager.selectInDiagram(view);
+                        ModelExplorerView.select(ownedElement.ownedElements[0], true);
+                        break;
+                    }
+                }
+                else if(ownedElement.ownedElements.length == 1)
                 {
                     if(ownedElement.ownedElements[0] instanceof type.UMLDiagram)
                     {
@@ -37,25 +50,16 @@ define(function (require, exports, module) {
 
                         if(view)
                         {
+                            foundView = true;
                             DiagramManager.selectInDiagram(view);
                             ModelExplorerView.select(ownedElement.ownedElements[0], true);
-                        }
-                        else
-                        {
-                            Toast.error("No linked diagram.");
+                            break;
                         }
                     }
-                    else
-                    {
-                        Toast.error("No linked diagram.");
-                    }
-                }
-                else
-                {
-                    Toast.error("No linked diagram.");
                 }
             }
-            else
+
+            if(!foundView)
             {
                 Toast.error("No linked diagram.");
             }

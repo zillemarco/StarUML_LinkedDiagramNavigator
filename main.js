@@ -26,6 +26,11 @@ define(function (require, exports, module) {
 
         var element = SelectionManager.getSelected();
         
+        // use subactivity when no ownedElements are present and subactivity is set
+        if (element.ownedElements.length < 1 && element.subactivity) {
+            element = element.subactivity;
+        }
+        
         if (element) {
             var foundDiagrams = [];
 

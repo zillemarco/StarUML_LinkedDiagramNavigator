@@ -4,7 +4,7 @@
     "description": "If it's present, navigates to the diagram connected to an element",
     "homepage": "https://github.com/zillemarco/StarUML_LinkedDiagramNavigator",
     "issues": "https://github.com/zillemarco/StarUML_LinkedDiagramNavigator/issues",
-    "version": "1.0.4",
+    "version": "2.0.0",
     "keywords": ["linked", "diagrams", "linked diagrams", "navigator"],
     "author": {
         "name": "Marco Zille",
@@ -13,6 +13,6 @@
     },
     "license": "GNU GPL",
     "engines": {
-        "staruml": ">=2.0.0"
+        "staruml": ">=3.0.0"
     }
 }

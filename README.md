@@ -1,7 +1,7 @@
 # Linked Diagram Navigator
 =================
 
-Linked Diagram Navigator for StarUML 2. This extension lets the user navigate to a diagram attached to an element with a simple right-click.
+Linked Diagram Navigator for StarUML 3. This extension lets the user navigate to a diagram attached to an element with a simple right-click.
 
 ![Linked Diagram Navigator](https://github.com/zillemarco/StarUML_LinkedDiagramNavigator/blob/master/Captures/capture_1.png?raw=true)
 ![Linked Diagram Navigator](https://github.com/zillemarco/StarUML_LinkedDiagramNavigator/blob/master/Captures/capture_2.png?raw=true)

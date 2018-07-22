@@ -1,0 +1,12 @@
+{
+    "context-menu": {
+        "#diagram-canvas": [
+            { "type": "separator" },
+            {
+                "label": "Open linked diagram",
+                "id": "linked_diagram_navigator_ctx_menu",
+                "command": "linked_diagram_navigator:open_linked_diagram"
+            }
+        ]
+    }
+}

@@ -1,101 +1,97 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, $, app, window */
 
-define(function (require, exports, module) {
-    "use strict";
+function isDefault(element)
+{
+    return element.defaultDiagram;
+}
 
-    var Repository          = app.getModule("core/Repository"),
-        DiagramManager      = app.getModule('diagrams/DiagramManager'),
-        SelectionManager    = app.getModule("engine/SelectionManager"),
-        ModelExplorerView   = app.getModule('explorer/ModelExplorerView'),
-        CommandManager      = app.getModule("command/CommandManager"),
-        DefaultMenus        = app.getModule("menu/DefaultMenus"),
-        ContextMenuManager  = app.getModule("menu/ContextMenuManager"),
-        Toast               = app.getModule("ui/Toast");
+function _handleOpenLinkedDiagram()
+{
+    var selectedModels = app.selections.getSelectedModels();
 
-    function isDefault(element) {
-        return element.defaultDiagram;
-    }
-    
-    function _handleOpenLinkedDiagram()
+    if(selectedModels.length == 0)
     {
-        if(SelectionManager.getSelectedModels().length > 1) {
-            Toast.warning("Select only one item.");
-            return;
+        app.toast.warning("No items selected.");
+        return;
+    }
+    else if(selectedModels.length > 1) {
+        app.toast.warning("Select only one item.");
+        return;
+    }
+
+    var element = app.selections.getSelected();    
+    if (element)
+    {
+        var foundDiagrams = [];
+
+        element.ownedElements.forEach(function(ele)
+        {
+            if (ele instanceof type.UMLDiagram ||
+                ele instanceof type.ERDDiagram ||
+                ele instanceof type.FCFlowchartDiagram ||
+                ele instanceof type.DFDDiagram)
+            {
+                foundDiagrams.push(ele);
+            }
+            else if(ele.ownedElements)
+            {
+                ele.ownedElements.forEach(function(innerEle)
+                {
+                    if (innerEle instanceof type.UMLDiagram ||
+                        innerEle instanceof type.ERDDiagram ||
+                        innerEle instanceof type.FCFlowchartDiagram ||
+                        innerEle instanceof type.DFDDiagram)
+                    {
+                        foundDiagrams.push(innerEle);
+                    }
+                });
+            }
+        });
+
+        if (foundDiagrams.length < 1)
+        {
+            app.toast.error("No linked diagram found.");
         }
+        else
+        {
+            var defaultDiagrams = foundDiagrams.filter(isDefault);
 
-        var element = SelectionManager.getSelected();
-        
-        // use subactivity when no ownedElements are present and subactivity is set
-        if (element.ownedElements.length < 1 && element.subactivity) {
-            element = element.subactivity;
-        }
-        
-        if (element) {
-            var foundDiagrams = [];
-
-            element.ownedElements.forEach(function(ele) {
-                if (ele instanceof type.UMLDiagram) {
-                    foundDiagrams.push(ele);
-                } else {
-                    ele.ownedElements.forEach(function(innerEle) {
-                        if (innerEle instanceof type.UMLDiagram) {
-                            foundDiagrams.push(innerEle);
-                        }
-                    });
-                }
-            });
-
-            if (foundDiagrams.length < 1) {
-                Toast.error("No linked diagram found.");
-            } else {
-                var diagram,
-                    defaultDiagrams = foundDiagrams.filter(isDefault);
-
-                // if no default diagram is set use normal diagram
-                if (defaultDiagrams.length < 1) {
-                    if (foundDiagrams.length > 1) {
-                        Toast.error("Multiple linked diagrams found. Please set one as default.");
-                    } else {
-                        diagram = foundDiagrams[0];
-                    }
-                } else {
-                    if (defaultDiagrams.length > 1) {
-                        Toast.error("Multiple linked diagrams found that are set as default.");
-                    } else {
-                        diagram = defaultDiagrams[0];
-                    }
-                }
-
-                if (diagram) {
-                    var view = diagram.ownedViews[0];
-                    if(view) {
-                        DiagramManager.selectInDiagram(view);
-                        ModelExplorerView.select(diagram, true);
-                    } else {
-                        Toast.error("No linked diagram with view found.");
-                    }
+            var openDiagram = function(diagram)
+            {
+                if (diagram)
+                {
+                    app.modelExplorer.select(diagram, true)
+                    app.diagrams.setCurrentDiagram(diagram, false);
                 }
             }
-        } else {
-            Toast.warning("Nothing selected.");
+
+            if (defaultDiagrams.length == 1)
+                openDiagram(defaultDiagrams[0]);
+            else if(foundDiagrams.length == 1)
+                openDiagram(foundDiagrams[0]);
+            else
+            {
+                var dlg = app.elementListPickerDialog.showDialog("Select a linked diagram to open", foundDiagrams).then(function ({buttonId, returnValue})
+                {
+                    if (buttonId === 'ok')
+                        openDiagram(returnValue);
+                });
+            }
+
         }
     }
-
-    /**
-     * Initialize Extension
-     */
-    function init() {
-        var CMD_OPEN_LINKED_DIAGRAM = "linkedDiagramNavigator.openLinkedDiagram";
-
-        CommandManager.register("Open linked diagram", CMD_OPEN_LINKED_DIAGRAM, _handleOpenLinkedDiagram);
-
-        var contextMenu = ContextMenuManager.getContextMenu(DefaultMenus.contextMenus.DIAGRAM);
-
-        contextMenu.addMenuDivider();
-        contextMenu.addMenuItem(CMD_OPEN_LINKED_DIAGRAM);
+    else
+    {
+        app.toast.warning("Nothing selected.");
     }
+}
 
-    // Initialize Extension
-    init();
-});
+/** Initialize Extension */
+function init()
+{
+    var CMD_OPEN_LINKED_DIAGRAM = "linked_diagram_navigator:open_linked_diagram";
+    app.commands.register(CMD_OPEN_LINKED_DIAGRAM, _handleOpenLinkedDiagram);
+}
+
+exports.init = init;

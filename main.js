@@ -24,8 +24,12 @@ function _handleOpenLinkedDiagram()
     if (element)
     {
         var foundDiagrams = [];
+        
+        var oe = element.ownedElements;
+        if(element.subactivity && element.ownedElements.lenght == 0 && element.subactivity.ownedElements.length > 0)
+            oe = element.subactivity.ownedElements;
 
-        element.ownedElements.forEach(function(ele)
+        oe.forEach(function(ele)
         {
             if (ele instanceof type.UMLDiagram ||
                 ele instanceof type.ERDDiagram ||

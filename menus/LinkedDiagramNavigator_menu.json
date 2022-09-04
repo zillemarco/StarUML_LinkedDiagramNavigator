@@ -3,9 +3,14 @@
         "#diagram-canvas": [
             { "type": "separator" },
             {
-                "label": "Open linked diagram",
-                "id": "linked_diagram_navigator_ctx_menu",
-                "command": "linked_diagram_navigator:open_linked_diagram"
+                "label": "Open child diagram",
+                "id": "linked_diagram_navigator_ctx_menu_for_child",
+                "command": "linked_diagram_navigator:open_child_diagram"
+            },
+            {
+                "label": "Open parent diagram",
+                "id": "linked_diagram_navigator_ctx_menu_for_parent",
+                "command": "linked_diagram_navigator:open_parent_diagram"
             }
         ]
     }

@@ -1,3 +1,4 @@
 {
-    "cmdctrl-l": "linked_diagram_navigator:open_linked_diagram"
+    "cmdctrl-l": "linked_diagram_navigator:open_child_diagram",
+    "cmdctrl-k": "linked_diagram_navigator:open_parent_diagram"
 }
